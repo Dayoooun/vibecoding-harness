@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "referenceWorkspace": {
+    "sources": [
+      {
+        "id": "github-repo:Dayoooun/vibecoding-harness:main",
+        "type": "github-repo",
+        "repo": { "org": "Dayoooun", "name": "vibecoding-harness" },
+        "ref": "main"
+      }
+    ]
+  },
+  "starter": {
+    "source": "v0-default"
+  },
+  "_meta": {
+    "실측일": "2026-08-29",
+    "확인 계정": "강사 유료 계정",
+    "확인 화면": "v0.app/docs/design-systems-2 의 v0.json 스키마 절",
+    "note": "starter 는 v0-default 다. 이 하네스는 컴포넌트 패키지가 아니라 지침 문서 묶음이므로 별도 스타터 앱을 두지 않는다."
+  }
+}

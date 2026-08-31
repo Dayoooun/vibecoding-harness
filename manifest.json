@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "name": "vibecoding-harness",
+  "description": "바이브코딩 수업용 범용 지침 하네스. 산출물 목록의 단일 원본이다.",
+  "items": [
+    {
+      "id": "long-prompt",
+      "path": "common/10-long-prompt.md",
+      "kind": "long-prompt",
+      "title": "🧩 홈페이지 프롬프트 (한 번에 던지는 1통)",
+      "desc": "대괄호만 내 가게 정보로 바꿔 v0·ChatGPT Sites 대화창에 통째로 붙여넣습니다"
+    },
+    {
+      "id": "rules",
+      "path": "common/20-rules.md",
+      "kind": "rules",
+      "title": "📌 짧은 규칙 세트",
+      "desc": "v0 Instructions 에 하나씩 저장해 상주시키는 1~2줄 규칙"
+    },
+    {
+      "id": "checklist-common",
+      "path": "checklists/common-5.md",
+      "kind": "checklist-common",
+      "title": "✅ 자가 채점표 — 공통 5항목",
+      "desc": "만든 뒤 혼자 채점합니다. 미달 항목마다 붙여넣을 재생성 프롬프트가 있습니다"
+    },
+    {
+      "id": "checklist-v0",
+      "path": "checklists/v0-2.md",
+      "kind": "checklist-v0",
+      "title": "✅ 자가 채점표 — v0 전용 2항목",
+      "desc": "v0 로 만든 경우에만 추가로 채점합니다. ChatGPT Sites 는 채점하지 않습니다"
+    }
+  ]
+}
