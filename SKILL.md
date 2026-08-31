@@ -2,8 +2,9 @@
 name: vibecoding-harness
 description: 소상공인 가게 홈페이지를 만들 때 쓰는 지침. 결과물의 구조와 품질 하한선을 고정한다.
 실측일: 2026-08-29
-확인 계정: 강사 유료 계정
-확인 화면: v0.app/design-systems 임포트 폼, chatgpt.com/sites
+확인 계정: 없음 (공식 문서 기준 작성. 실계정 확인 전이다)
+확인 화면: v0.app/docs/design-systems-2 (SKILL.md·v0.json 스키마), v0.app/docs/instructions
+미검증: 이 파일이 v0 임포트에서 실제로 어떻게 읽히는지는 확인하지 않았다. docs/instructor-design-system.md 절차 B 가 그것을 재는 spike 다
 metadata:
   v0.kind: design-system
 ---
