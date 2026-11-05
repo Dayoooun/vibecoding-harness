@@ -1,52 +1,56 @@
-# vibecoding-harness — intent·증거·게이트·독립 review·로컬 지식을 잇는 작은 런타임
+# vibecoding-harness — 말로 홈페이지를 만드는 수업의 지침 정본
 
 ## 왜 있나
 
-- 누구를 위한 무엇인가: 소비 프로젝트의 intent(원하는 결과와 범위), 증거, 개발 게이트, 독립 review, 검증된 로컬 지식을 연결하는 Codex·Claude Code 공용 런타임. 정본은 `knowledge/` OKF 문서다.
-- 지금 상태: 개발 중. Codex·Claude Code 전체 live matrix(release install → selected root → native development → gates → K1 readback)는 README 기준 전부 `unverified`다.
+- 누구를 위한 무엇인가: 수강생이 v0 또는 ChatGPT Sites 로 가게 홈페이지를 만들 때, 누가 하든 같은 구조와 같은 품질 하한선이 나오게 하는 지침 문서 묶음(README).
+- 수강생 경로: `common/10-long-prompt.md` 를 채워 한 번에 붙여넣고, `checklists/common-5.md`(v0 는 `checklists/v0-2.md` 추가)로 채점한다.
 
 ## 구조
 
 ```
-scripts/      harness.mjs(제품 명령) · release.mjs · install.mjs · check-harness.mjs · run-tests.mjs
-knowledge/    release의 bundled defaults 정본(OKF 개념 문서 + index.md, log.md)
-SKILL.md      얇은 공통 진입점
-adapters/ profiles/ schemas/ templates/ checklists/ common/   런타임 부품
-tests/        unit · integration · e2e (visual-matrix, native-live)
-docs/         instructor-design-system.md, two-rater-check.md
-manifest.json v0.json v0/
+common/       도구 불변부 — 00-core.md(공통층 정본) · 10-long-prompt.md · 20-rules.md
+checklists/   도구 불변부 — common-5.md · v0-2.md (항목별 재생성 프롬프트 포함)
+v0/           도구 의존부 — 30-tech-layer.md (코드 규칙·디자인 토큰·애니메이션, v0 전용)
+docs/         도구 의존부 — instructor-design-system.md(강사용) · two-rater-check.md
+SKILL.md v0.json   도구 의존부(루트)
+manifest.json      산출물 목록의 단일 원본. 검사기가 읽는다
+scripts/check-harness.mjs   문서 형식 검사기
 ```
 
 ## 명령
 
 |할 일|명령|
 |---|---|
-|설치|`npm ci --ignore-scripts` (CI 기준)|
-|개발 실행|`node "$R/scripts/harness.mjs" init --project "$PROJECT" --json` (R = 선택된 release realpath)|
-|구조 검사|`npm run check`|
-|테스트|`npm test` (unit+integration). 개별: `npm run test:unit` · `npm run test:integration` · `npm run test:e2e` · `npm run test:visual` · `npm run test:native`|
-|릴리스 빌드·검증|`node scripts/release.mjs build --source-root "$PWD" --output "$RELEASE"` → `node scripts/release.mjs validate --release-root "$RELEASE"`|
-|배포|미확인 (README: 설치·runner·지식 승격은 commit/push/PR/deploy를 자동으로 하지 않는다)|
+|설치|없음 (package.json·의존성 없음. Node 22 만 필요 — CI 기준)|
+|형식 검사|`node scripts/check-harness.mjs`|
+|본문 미집필 상태 검사|`node scripts/check-harness.mjs --skeleton` (구조·매니페스트만, 본문 검사 생략)|
+|테스트|별도 테스트 없음. 위 검사기가 유일한 게이트|
+|배포|없음 (지침 문서 레포)|
 
 ## 배포와 확인
 
-- 어디에 도나: 배포 대상 미확인. `scripts/install.mjs` 가 release를 `--home` 격리 디렉터리 또는 `--personal` home에 설치한다.
-- 자동/수동: CI(`.github/workflows/check.yml`)는 main push·PR에서 `npm run check`, `npm test` 만 돈다. 설치는 수동.
-- 배포 확인: 설치 후 `--finalize` 가 `ready` 를 반환해야 활성화 검증 완료. `activation_pending` 은 검증 통과가 아니다.
+- CI(`.github/workflows/check.yml`)는 main push·PR 에서 Node 22 로 `node scripts/check-harness.mjs` 만 돈다.
+- 종료코드 0 = 통과, 1 = 실패. 경고(실측일 90일 경과 등)는 통과를 막지 않는다.
+
+## 검사기가 막는 것 — 지침을 고치기 전에 읽는다
+
+- `common/`·`checklists/` 에 기술층 누수 금지: 코드펜스, HEX 색상값, 치수 단위(px·rem·vh·vw), 기술 어휘(css·hover·animation 등), 한국어 우회 표현(페이드·호버·애니메이션 등). Sites 경로가 깨진다.
+- `common/`·`v0/` 는 "~한다" 어투. "하세요·해주세요" 같은 사용자 조언 어투 금지.
+- 수강생 경로(`common/`·`checklists/`)는 Design System·`v0.json`·`SKILL.md` 를 참조하지 않는다.
+- 도구 의존부(`SKILL.md`·`v0.json`·`v0/`·`docs/`)는 `실측일` 헤더 필수. 90일 경고, 180일 실패.
+- `manifest.json` 의 모든 path 가 실재해야 한다. git 추적 파일 합계 1MB 미만, 미디어 파일 0건.
+- 본문 규격: 긴 프롬프트 2,000~4,000자, 짧은 규칙 5~8개·각 2줄 이하, 체크리스트 5+2 항목·재생성 프롬프트 1:1, 항목은 이진 술어로 끝나고 주관 표현 금지, `common/00-core.md` 에 역할 슬롯 6개.
 
 ## 이 저장소에서 승인이 필요한 일
 
-- `node scripts/install.mjs ... --personal` — 사용자 personal home에 쓴다. 명시 선택일 때만.
-- 소비 프로젝트에 대한 commit·push·PR·deploy, 원격 쓰기 — README가 별도 승인 없이는 하지 않는다고 규정.
+- 지침 문구 변경의 병합 — 강의 진행과 직결되므로 임의 변경을 병합하지 않는다. PR 병합 여부는 강사가 판단한다(README 기여 절).
 
 ## 하지 않는 것
 
-- 빈 intent·가짜 승인으로 시작하지 않는다 — 입력이 비거나 scope 승인이 없으면 `draft`/`blocked` 에서 멈추는 계약이다.
-- release 출력 디렉터리를 소스 안에 두지 않는다 — 미리 존재하지 않아야 한다(README).
-- mock receipt·capability probe·`--help`/version 결과를 설치 검증이나 provider 지원의 증거로 쓰지 않는다 — README가 live matrix 증거로 인정하지 않는다.
-- 기존 `AGENTS.md`·`CLAUDE.md`·사용자 지식을 덮어쓰지 않는다 — 설치 계약상 owner conflict면 중단.
-- 소스 `knowledge/` 와 설치 후 learned knowledge `K` 를 섞지 않는다 — release가 링크를 `knowledge-default/` 로 다시 쓴다.
-- 도구 부재·timeout·미실행을 pass로 보고하지 않는다 — `passed`/`failed`/`blocked`/`unverified`/`not_applicable` 은 서로 다른 상태다.
+- 체크리스트 항목이 검사에 걸렸다고 검사기 술어 목록을 넓히지 않는다 — 항목을 고친다. 목록 변경은 항목 변경과 같은 커밋에 넣지 않고, 왜 기존 술어로 표현할 수 없는지 커밋 본문에 적는다(README).
+- 정도를 묻는 술어(좋다·낫다·편하다)를 술어 목록에 넣지 않는다.
+- 요금·사용 한도 숫자를 문서에 적지 않는다 — 공식 문서 링크로 보낸다(README).
+- 코드 규칙·디자인 토큰·애니메이션 지시를 `v0/` 밖에 두지 않는다.
 
 ## 사고 이력
 
